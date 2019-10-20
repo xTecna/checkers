@@ -1,14 +1,14 @@
 window.onload = function () {
   //The initial setup
   var gameBoard = [
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [1, 0, 1, 0, 1, 0, 1, 0],
-    [0, 1, 0, 1, 0, 1, 0, 1],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 2, 0, 2, 0, 2, 0, 2],
     [2, 0, 2, 0, 2, 0, 2, 0],
     [0, 2, 0, 2, 0, 2, 0, 2],
-    [2, 0, 2, 0, 2, 0, 2, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 1, 0, 1, 0],
+    [0, 1, 0, 1, 0, 1, 0, 1],
+    [1, 0, 1, 0, 1, 0, 1, 0]
   ];
   //arrays to store the instances
   var pieces = [];
@@ -30,7 +30,7 @@ window.onload = function () {
     //which player's piece i it
     this.player = '';
     //figure out player by piece id
-    if (this.element.attr("id") < 12)
+    if (this.element.attr("id") > 11)
       this.player = 1;
     else
       this.player = 2;
@@ -143,8 +143,8 @@ window.onload = function () {
     this.inRange = function (piece) {
       for (let k of pieces)
         if (k.position[0] == this.position[0] && k.position[1] == this.position[1]) return 'wrong';
-      if (!piece.king && piece.player == 1 && this.position[0] < piece.position[0]) return 'wrong';
-      if (!piece.king && piece.player == 2 && this.position[0] > piece.position[0]) return 'wrong';
+      if (!piece.king && piece.player == 1 && this.position[0] > piece.position[0]) return 'wrong';
+      if (!piece.king && piece.player == 2 && this.position[0] < piece.position[0]) return 'wrong';
       if (dist(this.position[0], this.position[1], piece.position[0], piece.position[1]) == Math.sqrt(2)) {
         //regular move
         return 'regular';
