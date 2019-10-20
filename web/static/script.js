@@ -334,13 +334,15 @@ window.onload = function () {
 
   //select the piece on click if it is the player's turn
   $('.piece').on("click", function () {
+    if (Board.playerTurn == 1){
     var selected;
     var isPlayersTurn = ($(this).parent().attr("class").split(' ')[0] == "player" + Board.playerTurn + "pieces");
     if (isPlayersTurn) {
-      if (!Board.continuousjump && pieces[$(this).attr("id")].allowedtomove) {
+        piece = pieces[$(this).attr("id")];
+        if (!Board.continuousjump && piece.allowedtomove) {
         if ($(this).hasClass('selected')) selected = true;
         $('.piece').each(function (index) {
-          $('.piece').eq(index).removeClass('selected')
+            $('.piece').eq(index).removeClass('selected');
         });
         if (!selected) {
           $(this).addClass('selected');
@@ -352,15 +354,19 @@ window.onload = function () {
         console.log(message)
       }
     }
+    }
   });
 
   //reset game when clear button is pressed
   $('#cleargame').on("click", function () {
+    if (Board.playerTurn == 1){
     Board.clear();
+    }
   });
 
   //move piece when tile is clicked
   $('.tile').on("click", function () {
+    if (Board.playerTurn == 1){
     //make sure a piece is selected
     if ($('.selected').length != 0) {
       //find the tile object being clicked
@@ -381,7 +387,7 @@ window.onload = function () {
               // exist continuous jump, you are not allowed to de-select this piece or select other pieces
               Board.continuousjump = true;
             } else {
-              Board.changePlayerTurn()
+                Board.changePlayerTurn();
             }
           }
           //if it's regular then move it if no jumping is available
@@ -394,6 +400,7 @@ window.onload = function () {
           }
         }
       }
+    }
     }
   });
 }
