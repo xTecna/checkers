@@ -144,8 +144,8 @@ window.onload = function () {
     this.inRange = function (piece) {
       for (let k of pieces)
         if (k.position[0] == this.position[0] && k.position[1] == this.position[1]) return 'wrong';
-      if (!piece.king && piece.player == 1 && this.position[0] > piece.position[0]) return 'wrong';
-      if (!piece.king && piece.player == 2 && this.position[0] < piece.position[0]) return 'wrong';
+      if (!Board.continuousjump && !piece.king && piece.player == 1 && this.position[0] > piece.position[0]) return 'wrong';
+      if (!Board.continuousjump && !piece.king && piece.player == 2 && this.position[0] < piece.position[0]) return 'wrong';
       if (dist(this.position[0], this.position[1], piece.position[0], piece.position[1]) == Math.sqrt(2)) {
         //regular move
         return 'regular';
