@@ -133,12 +133,15 @@ div#board {
   border-radius: 5px;
   box-shadow: 1px 1px 3px #232621;
   background-color: #B93848;
-  overflow: hidden; }
+  }
   div#board .tile {
     width: 10vmin;
     height: 10vmin;
     position: absolute;
     background-color: #232621; }
+  div#board .tile.tileselected {
+    background-color: #16A8C7;
+  }
   div#board .player1pieces .piece {
     position: absolute;
     width: 8vmin;
@@ -171,9 +174,25 @@ div#board {
     transition: all 0.2s linear;
     margin-top: 1vmin;
     margin-left: 1vmin;
-    cursor: pointer;
     border: 1vmin solid #8b8bff; }
     div#board .player2pieces .piece.selected {
       box-shadow: 0 0 10px 5px #16A8C7; }
+    div#board .column-numbers .column-number {
+      color: #FFFFFF;
+      position: absolute;
+      width: 10vmin;
+      top: -1.5em;
+      text-align: center;
+      font-size: 2vmin;
+    }
+    div#board .row-numbers .row-number {
+      color: #FFFFFF;
+      position: absolute;
+      height: 10vmin;
+      left: -1.5em;
+      text-align: center;
+      line-height: 10vmin;
+      font-size: 2vmin;
+    }
 
 /*# sourceMappingURL=style.css.map */
