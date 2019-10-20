@@ -10,6 +10,7 @@ window.onload = function () {
     [0, 1, 0, 1, 0, 1, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 0]
   ];
+  var gameHop = [-1, -1];
   //arrays to store the instances
   var pieces = [];
   var tiles = [];
@@ -158,6 +159,7 @@ window.onload = function () {
   //Board object - controls logistics of game
   var Board = {
     board: gameBoard,
+    hop: gameHop,
     score: {
       player1: 0,
       player2: 0
@@ -228,6 +230,7 @@ window.onload = function () {
     },
     //change the active player - also changes div.turn's CSS
     changePlayerTurn: function () {
+      Board.hop = [-1, -1];
       if (this.playerTurn == 1) {
         this.playerTurn = 2;
         $('.turn').css("background", "linear-gradient(to right, transparent 50%, #BEEE62 50%)");
@@ -420,9 +423,11 @@ window.onload = function () {
       //check if the tile is in range from the object
       var inRange = tile.inRange(piece);
         //if the move needed is jump, then move it but also check if another move can be made (double and triple jumps)
+          Board.hop = [-1, -1];
         if (inRange == 'jump') {
             piece.opponentJump(tile);
             piece.move(tile);
+            Board.hop = [piece.position[0], piece.position[1]];
             Board.clear_tiles();
               Board.continuousjump = true;
             if (piece.canJumpAny()) {
