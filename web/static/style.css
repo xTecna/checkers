@@ -30,6 +30,11 @@ html, body {
   html .clearfix, body .clearfix {
     clear: both; }
 
+div.container {
+  display: flex;
+  height: 100%;
+}
+
 div.column {
   position: relative;
   float: left;
@@ -38,11 +43,6 @@ div.column {
   min-height: 100%;
   width: 50%; }
 
-@media screen and (max-width: 1000px) {
-  div.column {
-    width: 100% !important;
-    overflow: hidden;
-    height: auto; } }
 div.info, div.stats {
   width: 70%;
   margin: 13vmin auto 0;
@@ -53,8 +53,8 @@ div.info, div.stats {
   border-radius: 3px;
   box-shadow: 1px 1px 3px #232621; }
 
-div.stats {
-  margin: 50px auto !important; }
+div.container div.stats {
+  margin: 50px auto; }
   div.stats .wrapper {
     display: flex; }
   div.stats #player1 {
@@ -123,6 +123,43 @@ div.stats {
     transition: background-color 0.15s linear; }
     div.stats button#cleargame:hover {
       background-color: #0c5a6b; }
+
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+  div.column:first-child {
+    width: 33%;
+  }
+
+  div.column:last-child {
+    width: 67%;
+  }
+}
+
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+  div.container {
+    flex-direction: column-reverse;
+  }
+
+  div.column {
+    width: 100% !important;
+    height: auto;
+    min-height: 0;
+  } 
+
+  div.column:first-child {
+    flex: 0.5;
+    display: flex;
+    height: 100%;
+  }
+
+  div.column:last-child {
+    flex: 1;
+  }
+
+  div.container div.info, div.container div.stats {
+    margin: 5vmin 3vmin;
+    width: 50%;
+  }
+}
 
 div#board {
   position: absolute;
