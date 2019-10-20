@@ -78,11 +78,13 @@ window.onload = function () {
       //find what the displacement is
       var dx = newPosition[1] - this.position[1];
       var dy = newPosition[0] - this.position[0];
+      if (!Board.continuousjump){
       //make sure object doesn't go backwards if not a king
       if (this.player == 1 && this.king == false) {
         if (newPosition[0] > this.position[0]) return false;
         } else if (this.player == 2 && this.king == false) {
           if (newPosition[0] < this.position[0]) return false;
+      }
       }
       //must be in bounds
       if (newPosition[0] > 7 || newPosition[1] > 7 || newPosition[0] < 0 || newPosition[1] < 0) return false;
@@ -296,11 +298,11 @@ window.onload = function () {
           piece.opponentJump(tile);
           piece.move(tile);
           Board.hop = [piece.position[0], piece.position[1]];
+          Board.continuousjump = true;
           if (piece.canJumpAny()) {
-            // exist continuous jump, you are not allowed to de-select this piece or select other pieces
-            Board.continuousjump = true;
             setTimeout((function() {this.requestAiMove()}).bind(this), 1000);
           } else {
+            Board.continuousjump = false;
             piece.element.removeClass('selected');
             Board.changePlayerTurn();
         }
@@ -381,12 +383,13 @@ window.onload = function () {
         if (inRange == 'jump') {
           if (piece.opponentJump(tile)) {
             piece.move(tile);
+              Board.continuousjump = true;
             if (piece.canJumpAny()) {
               // Board.changePlayerTurn(); //change back to original since another turn can be made
               piece.element.addClass('selected');
               // exist continuous jump, you are not allowed to de-select this piece or select other pieces
-              Board.continuousjump = true;
             } else {
+                Board.continuousjump = false;
                 Board.changePlayerTurn();
             }
           }
