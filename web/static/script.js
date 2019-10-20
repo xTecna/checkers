@@ -80,12 +80,12 @@ window.onload = function () {
       var dx = newPosition[1] - this.position[1];
       var dy = newPosition[0] - this.position[0];
       if (!Board.continuousjump){
-      //make sure object doesn't go backwards if not a king
-      if (this.player == 1 && this.king == false) {
-        if (newPosition[0] > this.position[0]) return false;
+        //make sure object doesn't go backwards if not a king
+        if (this.player == 1 && this.king == false) {
+          if (newPosition[0] > this.position[0]) return false;
         } else if (this.player == 2 && this.king == false) {
           if (newPosition[0] < this.position[0]) return false;
-      }
+        }
       }
       //must be in bounds
       if (newPosition[0] > 7 || newPosition[1] > 7 || newPosition[0] < 0 || newPosition[1] < 0) return false;
@@ -132,8 +132,8 @@ window.onload = function () {
       Board.board[this.position[0]][this.position[1]] = 0;
       //reset position so it doesn't get picked up by the for loop in the canOpponentJump method
       this.position = [];
-      }
     }
+  }
 
   function Tile(element, position) {
     //linked DOM element
@@ -253,7 +253,7 @@ window.onload = function () {
       for (let piece of pieces){
         if (piece.player == this.playerTurn){
           if (piece.position.length != 0 && this.highlight_moves(piece, false) == true){
-      return false;
+            return false;
           }
         }
       }
@@ -320,7 +320,7 @@ window.onload = function () {
       var successFunction = function(response) {
         var move = response["move"];
         var piece, tile;
-          for (let k of pieces) {
+        for (let k of pieces) {
           if (k.position[0] == move[0] && k.position[1] == move[1]){
             piece = k;
             break;
@@ -330,8 +330,8 @@ window.onload = function () {
           if (k.position[0] == move[2] && k.position[1] == move[3]){
             tile = k;
             break;
-            }
           }
+        }
         piece.element.addClass('selected');
         var inRange = tile.inRange(piece);
         Board.hop = [-1, -1];
@@ -346,12 +346,12 @@ window.onload = function () {
           } else {
             Board.continuousjump = false;
             Board.changePlayerTurn();
-        }
+          }
           //if it's regular then move it if no jumping is available
         } else if (inRange == 'regular') {
           piece.move(tile);
           Board.changePlayerTurn();
-      }
+        }
       };
 
       successFunction = successFunction.bind(this);
@@ -377,59 +377,59 @@ window.onload = function () {
   //select the piece on click if it is the player's turn
   $('.piece').on("click", function () {
     if (Board.playerTurn == 1){
-    var selected;
-    var isPlayersTurn = ($(this).parent().attr("class").split(' ')[0] == "player" + Board.playerTurn + "pieces");
-    if (isPlayersTurn) {
+      var selected;
+      var isPlayersTurn = ($(this).parent().attr("class").split(' ')[0] == "player" + Board.playerTurn + "pieces");
+      if (isPlayersTurn) {
         piece = pieces[$(this).attr("id")];
         if (!Board.continuousjump && piece.allowedtomove) {
-        if ($(this).hasClass('selected')) selected = true;
-        $('.piece').each(function (index) {
+          if ($(this).hasClass('selected')) selected = true;
+          $('.piece').each(function (index) {
             $('.piece').eq(index).removeClass('selected');
-        });
+          });
           Board.clear_tiles();
-        if (!selected) {
-          $(this).addClass('selected');
+          if (!selected) {
+            $(this).addClass('selected');
             Board.highlight_moves(piece, true);
+          }
+        } else {
+          let exist = "jump exist for other pieces, that piece is not allowed to move"
+          let continuous = "continuous jump exist, you have to jump the same piece"
+          let message = !Board.continuousjump ? exist : continuous
+          console.log(message)
         }
-      } else {
-        let exist = "jump exist for other pieces, that piece is not allowed to move"
-        let continuous = "continuous jump exist, you have to jump the same piece"
-        let message = !Board.continuousjump ? exist : continuous
-        console.log(message)
       }
-    }
     }
   });
 
   //reset game when clear button is pressed
   $('#cleargame').on("click", function () {
     if (Board.playerTurn == 1){
-    Board.clear();
+      Board.clear();
     }
   });
 
   //move piece when tile is clicked
   $('.tile').on("click", function () {
     if (Board.playerTurn == 1){
-    //make sure a piece is selected
-    if ($('.selected').length != 0) {
+      //make sure a piece is selected
+      if ($('.selected').length != 0) {
         //make sure a tile is selected
         if ($(this).hasClass('tileselected')) {
-      //find the tile object being clicked
-      var tileID = $(this).attr("id").replace(/tile/, '');
-      var tile = tiles[tileID];
-      //find the piece being selected
-      var piece = pieces[$('.selected').attr("id")];
-      //check if the tile is in range from the object
-      var inRange = tile.inRange(piece);
-        //if the move needed is jump, then move it but also check if another move can be made (double and triple jumps)
+          //find the tile object being clicked
+          var tileID = $(this).attr("id").replace(/tile/, '');
+          var tile = tiles[tileID];
+          //find the piece being selected
+          var piece = pieces[$('.selected').attr("id")];
+          //check if the tile is in range from the object
+          var inRange = tile.inRange(piece);
+          //if the move needed is jump, then move it but also check if another move can be made (double and triple jumps)
           Board.hop = [-1, -1];
-        if (inRange == 'jump') {
+          if (inRange == 'jump') {
             piece.opponentJump(tile);
             piece.move(tile);
             Board.hop = [piece.position[0], piece.position[1]];
             Board.clear_tiles();
-              Board.continuousjump = true;
+            Board.continuousjump = true;
             if (piece.canJumpAny()) {
               // Board.changePlayerTurn(); //change back to original since another turn can be made
               piece.element.addClass('selected');
@@ -437,21 +437,21 @@ window.onload = function () {
               Board.clear_tiles();
               Board.highlight_moves(piece, true);
             } else {
-                Board.continuousjump = false;
-                Board.changePlayerTurn();
+              Board.continuousjump = false;
+              Board.changePlayerTurn();
             }
-          //if it's regular then move it if no jumping is available
-        } else if (inRange == 'regular' && !Board.jumpexist) {
-          if (!piece.canJumpAny()) {
-            piece.move(tile);
+            //if it's regular then move it if no jumping is available
+          } else if (inRange == 'regular' && !Board.jumpexist) {
+            if (!piece.canJumpAny()) {
+              piece.move(tile);
               Board.clear_tiles();
-            Board.changePlayerTurn()
-          } else {
-            alert("You must jump when possible!");
+              Board.changePlayerTurn()
+            } else {
+              alert("You must jump when possible!");
+            }
           }
         }
       }
-    }
     }
   });
 }
