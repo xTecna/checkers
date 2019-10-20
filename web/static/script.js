@@ -51,15 +51,17 @@ window.onload = function () {
         if (tile.position[0] < this.position[0]) return false;
       }
       //remove the mark from Board.board and put it in the new spot
+      Board.board[tile.position[0]][tile.position[1]] = Board.board[this.position[0]][this.position[1]];
       Board.board[this.position[0]][this.position[1]] = 0;
-      Board.board[tile.position[0]][tile.position[1]] = this.player;
       this.position = [tile.position[0], tile.position[1]];
       //change the css using board's dictionary
       this.element.css('top', Board.dictionary[this.position[0]]);
       this.element.css('left', Board.dictionary[this.position[1]]);
       //if piece reaches the end of the row on opposite side crown it a king (can move all directions)
-      if (!this.king && (this.position[0] == 0 || this.position[0] == 7))
+      if (!this.king && (this.position[0] == 0 || this.position[0] == 7)){
+        Board.board[tile.position[0]][tile.position[1]] = -1 * this.player;
         this.makeKing();
+      }
       return true;
     };
 
@@ -189,9 +191,9 @@ window.onload = function () {
               countTiles = this.tileRender(row, column, countTiles)
             }
           }
-          if (this.board[row][column] == 1) {
+          if (Math.abs(this.board[row][column]) == 1) {
             countPieces = this.playerPiecesRender(1, row, column, countPieces)
-          } else if (this.board[row][column] == 2) {
+          } else if (Math.abs(this.board[row][column]) == 2) {
             countPieces = this.playerPiecesRender(2, row, column, countPieces)
           }
         }
