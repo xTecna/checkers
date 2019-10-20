@@ -166,12 +166,17 @@ window.onload = function () {
     jumpexist: false,
     continuousjump: false,
     tilesElement: $('div.tiles'),
+    columnNumbersElement: $('div.column-numbers'),
+    rowNumbersElement: $('div.row-numbers'),
+    letters: ["A", "B", "C", "D", "E", "F", "G", "H"],
     //dictionary to convert position in Board.board to the viewport units
     dictionary: ["0vmin", "10vmin", "20vmin", "30vmin", "40vmin", "50vmin", "60vmin", "70vmin", "80vmin", "90vmin"],
     //initialize the 8x8 board
     initalize: function () {
       var countPieces = 0;
       var countTiles = 0;
+      this.columnNumbersRender();
+      this.rowNumbersRender();
       for (let row in this.board) { //row is the index
         for (let column in this.board[row]) { //column is the index
           //whole set of if statements control where the tiles and pieces should be placed on the board
@@ -197,7 +202,16 @@ window.onload = function () {
       tiles[countTiles] = new Tile($("#tile" + countTiles), [parseInt(row), parseInt(column)]);
       return countTiles + 1
     },
-
+    columnNumbersRender: function () {
+      for (let i = 0; i < 8; i++){
+        this.columnNumbersElement.append("<div class='column-number' id='columnNumber" + i + "' style='left:" + this.dictionary[i] + ";'>" + this.letters[i] + "</div>");
+      }
+    },
+    rowNumbersRender: function () {
+      for (let i = 0; i < 8; i++){
+        this.rowNumbersElement.append("<div class='row-number' id='rowNumber" + i + "' style='top:" + this.dictionary[i] + ";'>" + (i + 1) + "</div>");
+      }
+    },
     playerPiecesRender: function (playerNumber, row, column, countPieces) {
       $(`.player${playerNumber}pieces`).append("<div class='piece' id='" + countPieces + "' style='top:" + this.dictionary[row] + ";left:" + this.dictionary[column] + ";'></div>");
       pieces[countPieces] = new Piece($("#" + countPieces), [parseInt(row), parseInt(column)]);
