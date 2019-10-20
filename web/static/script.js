@@ -80,9 +80,9 @@ window.onload = function () {
       var dy = newPosition[0] - this.position[0];
       //make sure object doesn't go backwards if not a king
       if (this.player == 1 && this.king == false) {
-        if (newPosition[0] < this.position[0]) return false;
-      } else if (this.player == 2 && this.king == false) {
         if (newPosition[0] > this.position[0]) return false;
+        } else if (this.player == 2 && this.king == false) {
+          if (newPosition[0] < this.position[0]) return false;
       }
       //must be in bounds
       if (newPosition[0] > 7 || newPosition[1] > 7 || newPosition[0] < 0 || newPosition[1] < 0) return false;
