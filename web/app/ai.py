@@ -12,14 +12,14 @@ SOUTHEAST = "southeast"
 
 class Board(object):
     def start(self):
-        start = (   0, 1, 0, 1, 0, 1, 0, 1,
-                    1, 0, 1, 0, 1, 0, 1, 0,
-                    0, 1, 0, 1, 0, 1, 0, 1,
-                    0, 0, 0, 0, 0, 0, 0, 0,
-                    0, 0, 0, 0, 0, 0, 0, 0,
+        start = (   0, 2, 0, 2, 0, 2, 0, 2,
                     2, 0, 2, 0, 2, 0, 2, 0,
                     0, 2, 0, 2, 0, 2, 0, 2,
-                    2, 0, 2, 0, 2, 0, 2, 0, (-1, -1), 1)
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0,
+                    1, 0, 1, 0, 1, 0, 1, 0,
+                    0, 1, 0, 1, 0, 1, 0, 1,
+                    1, 0, 1, 0, 1, 0, 1, 0, (-1, -1), 1)
         return start
 
     def current_player(self, state):
@@ -31,7 +31,7 @@ class Board(object):
 
     def king(self, state, (x,y)):
         if state[8 * x + y] != 0:
-            if (state[8 * x + y] == 2 and x == 0) or (state[8 * x + y] == 1 and x == 7):
+            if (state[8 * x + y] == 2 and x == 7) or (state[8 * x + y] == 1 and x == 0):
                 state[8 * x + y] = state[8 * x + y] * (-1)
         return state
 
@@ -58,13 +58,13 @@ class Board(object):
     
     def rel(self, dir, (x,y)):
 		if dir == NORTHWEST:
-			return (x, y, x + 1, y - 1)
-		elif dir == NORTHEAST:
-			return (x, y, x + 1, y + 1)
-		elif dir == SOUTHWEST:
 			return (x, y, x - 1, y - 1)
-		elif dir == SOUTHEAST:
+		elif dir == NORTHEAST:
 			return (x, y, x - 1, y + 1)
+		elif dir == SOUTHWEST:
+			return (x, y, x + 1, y - 1)
+		elif dir == SOUTHEAST:
+			return (x, y, x + 1, y + 1)
 		else:
 			return 0
 
@@ -161,7 +161,7 @@ class MonteCarlo(object):
         self.C = kwargs.get('C', 1.4)
 
         self.board = board
-        self.states = [self.board.start()]
+        self.states = []
         self.wins = {}
         self.plays = {}
         self.max_depth = 0
@@ -256,6 +256,3 @@ class MonteCarlo(object):
             plays[(player, state)] += 1
             if (player == winner):
                 wins[(player, state)] += 1
-
-m = MonteCarlo(Board())
-m.get_play()
