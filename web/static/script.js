@@ -129,12 +129,8 @@ window.onload = function () {
       Board.board[this.position[0]][this.position[1]] = 0;
       //reset position so it doesn't get picked up by the for loop in the canOpponentJump method
       this.position = [];
-      var playerWon = Board.checkifAnybodyWon();
-      if (playerWon) {
-        $('#winner').html("Player " + playerWon + " has won!");
       }
     }
-  }
 
   function Tile(element, position) {
     //linked DOM element
@@ -237,7 +233,15 @@ window.onload = function () {
         this.playerTurn = 1;
         $('.turn').css("background", "linear-gradient(to right, #BEEE62 50%, transparent 50%)");
       }
-      this.check_if_jump_exist()
+      this.check_if_jump_exist();
+      var playerWon = Board.checkifAnybodyWon();
+      if (playerWon) {
+        $('#winner').html("Jogador " + playerWon + " venceu!");
+      }else{
+        if (this.playerTurn == 2) {
+          this.requestAiMove();
+        }
+      }
       return;
     },
     checkifAnybodyWon: function () {
@@ -268,24 +272,56 @@ window.onload = function () {
         for (let k of pieces) k.allowedtomove = true;
       }
     },
-    // Possibly helpful for communication with back-end.
-    str_board: function () {
-      ret = ""
-      for (let i in this.board) {
-        for (let j in this.board[i]) {
-          var found = false
+    requestAiMove: function() {
+      var successFunction = function(response) {
+        var move = response["move"];
+        var piece, tile;
           for (let k of pieces) {
-            if (k.position[0] == i && k.position[1] == j) {
-              if (k.king) ret += (this.board[i][j] + 2)
-              else ret += this.board[i][j]
-              found = true
-              break
+          if (k.position[0] == move[0] && k.position[1] == move[1]){
+            piece = k;
+            break;
+          }
+        }
+        for (let k of tiles) {
+          if (k.position[0] == move[2] && k.position[1] == move[3]){
+            tile = k;
+            break;
             }
           }
-          if (!found) ret += '0'
+        piece.element.addClass('selected');
+        var inRange = tile.inRange(piece);
+        Board.hop = [-1, -1];
+        //if the move needed is jump, then move it but also check if another move can be made (double and triple jumps)
+        if (inRange == 'jump') {
+          piece.opponentJump(tile);
+          piece.move(tile);
+          Board.hop = [piece.position[0], piece.position[1]];
+          if (piece.canJumpAny()) {
+            // exist continuous jump, you are not allowed to de-select this piece or select other pieces
+            Board.continuousjump = true;
+            setTimeout((function() {this.requestAiMove()}).bind(this), 1000);
+          } else {
+            piece.element.removeClass('selected');
+            Board.changePlayerTurn();
         }
+          //if it's regular then move it if no jumping is available
+        } else if (inRange == 'regular') {
+          piece.move(tile);
+          piece.element.removeClass('selected');
+          Board.changePlayerTurn();
       }
-      return ret
+      };
+
+      successFunction = successFunction.bind(this);
+
+      $.ajax({
+        url: "http://127.0.0.1:5000/next",
+        type: "POST",
+        data: JSON.stringify({ "board": this.board, "hop": this.hop }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: successFunction
+      });
     }
   }
 
