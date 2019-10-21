@@ -318,6 +318,9 @@ window.onload = function () {
         $('.tile').eq(index).removeClass('tileselected');
       });
     },
+    convert_move: function(move) {
+      return (move[0] + 1) + Board.letters[move[1]] + ' → ' + (move[2] + 1) + Board.letters[move[3]];
+    },
     renderResult: function(result) {
       var element = $("#result");
       element.empty();
@@ -325,7 +328,7 @@ window.onload = function () {
       var table = "<table><tr><td><strong>Movimento</strong></td><td><strong>Vitórias</strong></td><td><strong>Simulações</strong></td><td><strong>Percentual (%)</strong></td></tr>";
       var games = result["games"];
       for (let game of games){
-        table += "<tr><td>" + game["move"] + "</td><td>" + game["wins"] + "</td><td>" + game["plays"] + "</td><td>" + game["winrate"] + "</td></tr>";
+        table += "<tr><td>" + this.convert_move(game["move"]) + "</td><td>" + game["wins"] + "</td><td>" + game["plays"] + "</td><td>" + game["winrate"] + "</td></tr>";
       }
       table += "</table>";
       element.append(table);

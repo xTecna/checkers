@@ -178,7 +178,11 @@ class MonteCarlo(object):
         if not legal:
             return
         if len(legal) == 1:
-            return legal[0]
+            written_return["simulations"] = 0
+            written_return["time"] = "0.00"
+            written_return["games"] = [{"move": list(legal[0]), "winrate": "N/A", "wins": 0, "plays": 0}]
+            written_return["upfront"] = 0
+            return legal[0], written_return
 
         games = 0
         begin = time.time()
