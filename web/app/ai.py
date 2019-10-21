@@ -173,6 +173,7 @@ class MonteCarlo(object):
         state = self.states[-1]
         player = self.board.current_player(state)
         legal = self.board.legal_plays(self.states[:])
+        written_return = {}
 
         if not legal:
             return
@@ -187,7 +188,8 @@ class MonteCarlo(object):
 
         moves_states = [(p, self.board.next_state(state, p)) for p in legal]
 
-        print str(games) + ' ' + str(time.time() - begin)
+        written_return["simulations"] = games
+        written_return["time"] = "{0:.2f}".format(time.time() - begin)
 
         percent_wins, move = max(
             (
@@ -196,6 +198,7 @@ class MonteCarlo(object):
             ) for p, S in moves_states
         )
 
+        written_return["games"] = []
         for x in sorted(
             ((100 * self.wins.get((player, S), 0) / self.plays.get((player, S), 1),
             self.wins.get((player, S), 0),
@@ -204,11 +207,11 @@ class MonteCarlo(object):
                 for p, S in moves_states),
                 reverse=True
         ):
-            print "{3}: {0:.2f}% ({1}/{2})".format(*x)
+            written_return["games"].append({"move": list(x[3]), "winrate": "{0:.2f}".format(x[0]), "wins": x[1], "plays": x[2]})
 
-        print "Maximum depth searched: " + str(self.max_depth)
+        written_return["upfront"] = self.max_depth
 
-        return move
+        return move, written_return
 
     def run_simulation(self):
         plays, wins = self.plays, self.wins

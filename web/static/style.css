@@ -43,18 +43,38 @@ div.column {
   min-height: 100%;
   width: 50%; }
 
-div.info, div.stats {
-  width: 70%;
-  margin: 13vmin auto 0;
+/* Info + Stats Column */
+div.column:first-child {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Board Column */
+div.column:last-child {
+  flex: 1;
+}
+
+div.column > div.column-content {
   box-sizing: border-box;
+  padding: 3vmin 3vmin;
+  width: 100%;
+}
+
+div.column > div.column-content:last-child {
+  flex: 1;
+}
+
+div.info, div.stats {
+  box-sizing: border-box;
+  height: 40vmin;
   padding: 20px 30px;
   background-color: #F1F1FF;
   color: #3A3042;
   border-radius: 3px;
   box-shadow: 1px 1px 3px #232621; }
 
-div.container div.stats {
-  margin: 50px auto; }
   div.stats .wrapper {
     display: flex; }
   div.stats #player1 {
@@ -123,6 +143,10 @@ div.container div.stats {
     transition: background-color 0.15s linear; }
     div.stats button#cleargame:hover {
       background-color: #0c5a6b; }
+   div.stats {
+     overflow: auto;
+     height: 40vmin;
+   }
 
 @media screen and (max-width: 1024px) and (orientation: landscape) {
   div.column:first-child {
@@ -146,18 +170,11 @@ div.container div.stats {
   } 
 
   div.column:first-child {
-    flex: 0.5;
-    display: flex;
-    height: 100%;
+    flex-direction: row;
   }
 
-  div.column:last-child {
-    flex: 1;
-  }
-
-  div.container div.info, div.container div.stats {
-    margin: 5vmin 3vmin;
-    width: 50%;
+  div.column > div.column-content:first-child {
+    flex: 0.4;
   }
 }
 
@@ -231,5 +248,41 @@ div#board {
       line-height: 10vmin;
       font-size: 2vmin;
     }
+
+    .collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
 
 /*# sourceMappingURL=style.css.map */

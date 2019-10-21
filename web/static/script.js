@@ -318,9 +318,24 @@ window.onload = function () {
         $('.tile').eq(index).removeClass('tileselected');
       });
     },
+    renderResult: function(result) {
+      var element = $("#result");
+      element.empty();
+      element.append("<p><strong>Número de simulações:</strong> " + result["simulations"] + " (em " + result["time"] + " segundos)</p>");
+      var table = "<table><tr><td><strong>Movimento</strong></td><td><strong>Vitórias</strong></td><td><strong>Simulações</strong></td><td><strong>Percentual (%)</strong></td></tr>";
+      var games = result["games"];
+      for (let game of games){
+        table += "<tr><td>" + game["move"] + "</td><td>" + game["wins"] + "</td><td>" + game["plays"] + "</td><td>" + game["winrate"] + "</td></tr>";
+      }
+      table += "</table>";
+      element.append(table);
+      element.append("<p><strong>Número de movimentos à frente:</strong> " + result["upfront"] + "</p>")
+    },
     requestAiMove: function() {
       var successFunction = function(response) {
         var move = response["move"];
+        var result = response["result"];
+        this.renderResult(result);
         var piece, tile;
         for (let k of pieces) {
           if (k.position[0] == move[0] && k.position[1] == move[1]){
@@ -405,9 +420,7 @@ window.onload = function () {
 
   //reset game when clear button is pressed
   $('#cleargame').on("click", function () {
-    if (Board.playerTurn == 1){
-      Board.clear();
-    }
+    Board.clear();
   });
 
   //move piece when tile is clicked

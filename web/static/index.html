@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>HTML5 Checkers</title>
+  <title>Damas com a Árvore de Busca de Monte Carlo</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
@@ -14,26 +14,31 @@
 <body>
   <div class="container">
     <div class="column">
-      <div class="info">
-        <h1>Checkers</h1>
-        <hr>
-        <p>Inteligência do jogo feita por xTecna para a <a href="https://www.even3.com.br/xivsemanadoime/">XIV Semana do IME</a>.</p>
-        <p>Interface gráfica feita por codethejason para a <a href="http://fossasia.org">FOSSASIA</a> 2015.</p>
+      <div class="column-content">
+        <div class="info">
+          <h1>Jogo de Damas com MCTS</h1>
+          <hr>
+          <p>Inteligência do jogo feita por Raquel Marcolino para a <a href="https://www.even3.com.br/xivsemanadoime/">XIV Semana do IME</a>.</p>
+          <p>Interface gráfica feita por codethejason para a <a href="http://fossasia.org">FOSSASIA</a> 2015.</p>
+        </div>
       </div>
-      <div class="stats">
-        <h2>Estatísticas de Jogo</h2>
-        <div class="wrapper">
-        <div id="player1">
-          <h3>Jogador 1 (Abaixo)</h3>
+      <div class="column-content">
+        <div class="stats">
+          <h2>Estatísticas de Jogo</h2>
+          <div class="wrapper">
+          <div id="player1">
+            <h3>Jogador 1 (Abaixo)</h3>
+          </div>
+          <div id="player2">
+            <h3>Jogador 2 (Acima)</h3>
+          </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="turn"></div>
+          <span id="winner"></span>
+          <div id="result"></div>
+          <button id="cleargame">Reiniciar Jogo</button>
         </div>
-        <div id="player2">
-          <h3>Jogador 2 (Acima)</h3>
-        </div>
-        </div>
-        <div class="clearfix"></div>
-        <div class="turn"></div>
-        <span id="winner"></span>
-        <button id="cleargame">Reiniciar Jogo</button>
       </div>
     </div>
     <div class="column">

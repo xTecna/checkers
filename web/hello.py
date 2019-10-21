@@ -24,9 +24,9 @@ def next_move():
     content = request.json
 
     monteCarlo.update(convert(content["board"], content["hop"]))
-    action = monteCarlo.get_play()
+    action, result = monteCarlo.get_play()
     
-    return jsonify({"move" : list(action)})
+    return jsonify({"move" : list(action), "result" : result})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
