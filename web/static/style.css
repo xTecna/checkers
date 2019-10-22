@@ -143,6 +143,10 @@ div.info, div.stats {
     transition: background-color 0.15s linear; }
     div.stats button#cleargame:hover {
       background-color: #0c5a6b; }
+   div.info {
+     overflow: auto;
+     height: 40vmin;
+   }
    div.stats {
      overflow: auto;
      height: 40vmin;
