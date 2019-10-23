@@ -5,10 +5,10 @@ from random import choice
 from math import log, sqrt
 
 ##DIRECTIONS##
-NORTHWEST = "northwest"
-NORTHEAST = "northeast"
-SOUTHWEST = "southwest"
-SOUTHEAST = "southeast"
+NORTHWEST = 0
+NORTHEAST = 1
+SOUTHWEST = 2
+SOUTHEAST = 3
 
 class Board(object):
     def start(self):
