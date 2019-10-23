@@ -156,7 +156,7 @@ class Board(object):
 
 class MonteCarlo(object):
     def __init__(self, board, **kwargs):
-        self.calculation_time = kwargs.get('time', 2)
+        self.calculation_time = kwargs.get('time', 1)
         self.max_moves = kwargs.get('max_moves', 1000)
         self.C = kwargs.get('C', 1.4)
 
