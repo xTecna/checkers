@@ -148,10 +148,7 @@ class Board(object):
         state = state_history[-1]
         player = state[-1]
         if self.check_for_endgame(state):
-            if player == 1:
-                return 2
-            elif player == 2:
-                return 1
+            return 3 - player
         return 0
 
 class MonteCarlo(object):
