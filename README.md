@@ -1,5 +1,4 @@
-# checkers
-A Checkers Game based on Javascript.
+# Jogo de Damas com Monte Carlo Tree Search
 
 Um jogo de damas onde você pode jogar contra uma Inteligência Artificial que usa Monte Carlo Tree Search para tomar suas decisões.
 
